@@ -10,11 +10,25 @@ public class Main {
         if (num < 1) {
             System.out.println("This number is not natural!");
         } else {
-            System.out.println(num % 2 == 0 ? "This number is Even." : "This number is Odd.");
-            System.out.printf("It is %sa Buzz number.\n", num % 10 == 7 | num % 7 == 0 ? "" : "not ");
-            Explanation(num);
+            System.out.printf("Properties of %d\n        even: %b\n" +
+                    "         odd: %b\n" +
+                    "        buzz: %b\n" +
+                    "        duck: %b", num, isEven(num), !isEven(num), iSBuzz(num), isDuck(num));
         }
     }
+
+    static boolean iSBuzz(int num) {
+        return num % 10 == 7 | num % 7 == 0;
+    }
+
+    static boolean isEven(int num) {
+        return num % 2 == 0;
+    }
+
+    static boolean isDuck(int num) {
+        return (num + "").contains("0");
+    }
+
 
     static void Explanation(int num) {
         System.out.print("Explanation\n" + num);

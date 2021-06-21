@@ -10,10 +10,8 @@ public class Main {
         if (num < 1) {
             System.out.println("This number is not natural!");
         } else {
-            System.out.printf("Properties of %d\n        even: %b\n" +
-                    "         odd: %b\n" +
-                    "        buzz: %b\n" +
-                    "        duck: %b", num, isEven(num), !isEven(num), iSBuzz(num), isDuck(num));
+            System.out.printf("Properties of %d\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b",
+                    num, "even", isEven(num), "odd", !isEven(num), "buzz", iSBuzz(num), "duck", isDuck(num));
         }
     }
 

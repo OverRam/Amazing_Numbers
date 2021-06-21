@@ -5,40 +5,42 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter a natural number:");
-        int num = sc.nextInt();
-        if (num < 1) {
-            System.out.println("This number is not natural!");
-        } else {
-            System.out.printf("Properties of %d\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b",
-                    num, "even", isEven(num), "odd", !isEven(num), "buzz", iSBuzz(num), "duck", isDuck(num));
+
+        System.out.print("Welcome to Amazing Numbers!\n\nSupported requests:\n" +
+                "- enter a natural number to know its properties;\n- enter 0 to exit.\n");
+        long num = 2;
+        while (num != 0) {
+            System.out.print("\nEnter a request: ");
+            num = sc.nextLong();
+            System.out.println(num < 0 ? "\nThe first parameter should be a natural number or zero."
+                    : num == 0 ? "\nGoodbye!" : "");
+            if (num > 0) {
+                System.out.printf("Properties of %d\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b\n", num,
+                        "even", isEven(num), "odd", !isEven(num), "buzz", iSBuzz(num), "duck", isDuck(num),
+                        "palindromic", isPalindromic(num));
+            }
         }
     }
 
-    static boolean iSBuzz(int num) {
+    private static boolean isPalindromic(long num) {
+        String s = "" + num;
+        for (int i = 0; i < s.length() / 2; i++) {
+            if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static boolean iSBuzz(long num) {
         return num % 10 == 7 | num % 7 == 0;
     }
 
-    static boolean isEven(int num) {
+    static boolean isEven(long num) {
         return num % 2 == 0;
     }
 
-    static boolean isDuck(int num) {
-        return (num + "").contains("0");
+    static boolean isDuck(long num) {
+        return Long.toString(num).contains("0");
     }
-
-
-    static void Explanation(int num) {
-        System.out.print("Explanation\n" + num);
-        if (num % 10 == 7 && num % 7 == 0) {
-            System.out.println(" is divisible by 7 and ends with 7");
-        } else if (num % 10 == 7) {
-            System.out.println(" ends with 7");
-        } else if (num % 7 == 0) {
-            System.out.println(" is divisible by 7");
-        } else {
-            System.out.println(" is neither divisible by 7 nor does it end with 7");
-        }
-    }
-
 }

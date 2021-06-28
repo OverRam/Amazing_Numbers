@@ -2,49 +2,88 @@ package numbers;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class Main {
+    static String[] mode = {"even", "odd", "buzz", "duck", "palindromic", "gapful", "spy"};
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         welcomeScreen();
+        long firstNumber = 1;
 
-        long check = 2;
-        while (check != 0) {
+        do {
             System.out.print("\nEnter a request: ");
-            String[] strArr = sc.nextLine().split(" ");
-            long[] data = new long[strArr.length];
-            try {
-                for (int i = 0; i < strArr.length; i++) {
-                    data[i] = Long.parseLong(strArr[i]);
-                    if (i == 2) {
-                        break;
-                    }
-                }
-                check = data[0];
+            String[] strArr = sc.nextLine().toLowerCase().split(" ");
+            System.out.println();
 
-                if (data[0] <= 0) {
-                    System.out.println(data[0] == 0 ? "" : "\nThe first parameter should be a natural number or zero.");
-                } else {
-                    if (data.length == 1) {
-                        System.out.println("\n" + requestForOne(check));
-                    } else {
-                        if (data[1] <= 0) {
-                            System.out.println("\nThe second parameter should be a natural number.");
-                        } else {
-                            for (int i = 0; i < data[1]; i++) {
-                                System.out.print("\n" + requestForMulti(data[0] + i));
+            if (checkParam(strArr)) {
+                firstNumber = Long.parseLong(strArr[0]);
+
+                if (firstNumber != 0) {
+
+                    if (strArr.length == 3) {
+                        int findNext = 0;
+                        int countNumber = 0;
+
+                        while (findNext < Long.parseLong(strArr[1])) {
+                            if (propertyMode(strArr[2], firstNumber + countNumber)) {
+                                System.out.println(requestForMulti(firstNumber + countNumber));
+                                findNext++;
                             }
-                            System.out.println();
+                            countNumber++;
                         }
+
+                    } else if (strArr.length == 2) {
+                        for (int i = 0; i < Long.parseLong(strArr[1]); i++) {
+                            System.out.println(requestForMulti(firstNumber + i));
+                        }
+
+                    } else {
+                        System.out.println(requestForOne(firstNumber));
                     }
                 }
-
-            } catch (InputMismatchException | NumberFormatException e) {
-                System.out.println("\nThe first parameter should be a natural number or zero.");
             }
-        }
+        } while (firstNumber != 0);
         System.out.println("Goodbye!");
+    }
+
+
+    static boolean checkParam(String[] param) {
+        try {
+            long[] data = new long[param.length];
+            for (int i = 0; i < param.length; i++) {
+                if (i == 2) {
+                    break;
+                }
+                data[i] = Long.parseLong(param[i]);
+            }
+
+            if (data[0] < 0) {
+                System.out.println("The first parameter should be a natural number or zero.");
+                return false;
+            }
+
+            if (data.length > 1 && data[1] <= 0) {
+                System.out.println("The second parameter should be a natural number.");
+                return false;
+            }
+
+            if (param.length > 2) {
+                for (String s : mode) {
+                    if (s.toLowerCase().equals(param[2])) {
+                        return true;
+                    }
+                }
+                System.out.println("The property [" + param[2].toUpperCase() + "] is wrong.\n" +
+                        "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY]");
+                return false;
+            }
+
+        } catch (InputMismatchException | NumberFormatException e) {
+            System.out.println("The first parameter should be a natural number or zero.");
+            return false;
+        }
+        return true;
     }
 
     static String requestForOne(long num) {
@@ -54,7 +93,7 @@ public class Main {
     }
 
     static String requestForMulti(long num) {
-        return String.format("%20s", num + " is ") + (iSBuzz(num) ? "buzz, " : "") + (isDuck(num) ? "duck," : "") +
+        return String.format("%20s", num + " is ") + (iSBuzz(num) ? "buzz, " : "") + (isDuck(num) ? "duck, " : "") +
                 (isPalindromic(num) ? "palindromic, " : "") + (isGap(num) ? "gapful, " : "") +
                 (isSpy(num) ? "spy, " : "") + (isEven(num) ? "even" : "odd");
     }
@@ -113,5 +152,26 @@ public class Main {
 
     static boolean isDuck(long num) {
         return Long.toString(num).contains("0");
+    }
+
+    static boolean propertyMode(String mode, long num) {
+        switch (mode) {
+            case "spy":
+                return isSpy(num);
+            case "buzz":
+                return iSBuzz(num);
+            case "duck":
+                return isDuck(num);
+            case "even":
+                return isEven(num);
+            case "odd":
+                return !isEven(num);
+            case "palindromic":
+                return isPalindromic(num);
+            case "gapful":
+                return isGap(num);
+            default:
+                return false;
+        }
     }
 }

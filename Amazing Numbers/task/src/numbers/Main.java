@@ -37,7 +37,7 @@ public class Main {
                             if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber) &&
                                     PropertiesNumber.propertyMode(inpArr[3], firstNumber + countNumber)) {
 
-                                System.out.println(requestForMulti(firstNumber + countNumber));
+                                System.out.println(PropertiesNumber.requestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
                             countNumber++;
@@ -49,7 +49,7 @@ public class Main {
 
                         while (findNext < Long.parseLong(inpArr[1])) {
                             if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber)) {
-                                System.out.println(requestForMulti(firstNumber + countNumber));
+                                System.out.println(PropertiesNumber.requestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
                             countNumber++;
@@ -58,12 +58,12 @@ public class Main {
 
                     } else if (countNumbers == 2) {
                         for (int i = 0; i < Long.parseLong(inpArr[1]); i++) {
-                            System.out.println(requestForMulti(firstNumber + i));
+                            System.out.println(PropertiesNumber.requestForMulti(firstNumber + i));
                         }
                         System.out.println();
 
                     } else {
-                        System.out.println(requestForOne(firstNumber));
+                        System.out.println(PropertiesNumber.requestForOne(firstNumber));
                     }
                 }
             }
@@ -83,30 +83,6 @@ public class Main {
                 (!firstParam.equalsIgnoreCase("square") || !secParam.equalsIgnoreCase("sunny"));
     }
 
-    private static String requestForOne(long num) {
-        StringBuilder sb = new StringBuilder("Properties of ").append(num).append("\n");
-
-        for (int i = 0; i < Check.propertiesLength; i++) {
-            sb.append(String.format("%12s: %b\n", Check.propertiesArr[i].toLowerCase(),
-                    PropertiesNumber.propertyMode(Check.propertiesArr[i], num)));
-        }
-        return sb.toString();
-    }
-
-    private static String requestForMulti(long num) {
-        StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
-
-        for (int i = 0; i < Check.propertiesLength; i++) {
-            if (PropertiesNumber.propertyMode(Check.propertiesArr[i], num)) {
-                sb.append(Check.propertiesArr[i].toLowerCase());
-                if (!Check.propertiesArr[i].equals("EVEN") && !Check.propertiesArr[i].equals("ODD")) {
-                    sb.append(", ");
-                }
-            }
-        }
-
-        return sb.toString();
-    }
 
     private static void welcomeScreen() {
         System.out.println("Welcome to Amazing Numbers!\n" +

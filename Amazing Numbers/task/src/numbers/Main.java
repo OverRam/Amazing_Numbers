@@ -34,8 +34,8 @@ public class Main {
                         int countNumber = 0;
 
                         while (findNext < Long.parseLong(inpArr[1])) {
-                            if (propertyMode(inpArr[2], firstNumber + countNumber) &&
-                                    propertyMode(inpArr[3], firstNumber + countNumber)) {
+                            if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber) &&
+                                    PropertiesNumber.propertyMode(inpArr[3], firstNumber + countNumber)) {
 
                                 System.out.println(requestForMulti(firstNumber + countNumber));
                                 findNext++;
@@ -48,7 +48,7 @@ public class Main {
                         int countNumber = 0;
 
                         while (findNext < Long.parseLong(inpArr[1])) {
-                            if (propertyMode(inpArr[2], firstNumber + countNumber)) {
+                            if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber)) {
                                 System.out.println(requestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
@@ -88,7 +88,7 @@ public class Main {
 
         for (int i = 0; i < Check.propertiesLength; i++) {
             sb.append(String.format("%12s: %b\n", Check.propertiesArr[i].toLowerCase(),
-                    propertyMode(Check.propertiesArr[i], num)));
+                    PropertiesNumber.propertyMode(Check.propertiesArr[i], num)));
         }
         return sb.toString();
     }
@@ -97,7 +97,7 @@ public class Main {
         StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
 
         for (int i = 0; i < Check.propertiesLength; i++) {
-            if (propertyMode(Check.propertiesArr[i], num)) {
+            if (PropertiesNumber.propertyMode(Check.propertiesArr[i], num)) {
                 sb.append(Check.propertiesArr[i].toLowerCase());
                 if (!Check.propertiesArr[i].equals("EVEN") && !Check.propertiesArr[i].equals("ODD")) {
                     sb.append(", ");
@@ -119,105 +119,5 @@ public class Main {
                 "- two natural numbers and properties to search for;\n" +
                 "- separate the parameters with one space;\n" +
                 "- enter 0 to exit.\n");
-    }
-
-    private static boolean isPalindromic(long num) {
-        String s = "" + num;
-        for (int i = 0; i < s.length() / 2; i++) {
-            if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean isGap(long num) {
-        String gap = Long.toString(num);
-        int firstLast = Integer.parseInt(gap.charAt(0) + "" + gap.charAt(gap.length() - 1));
-
-        return !(gap.length() < 3 | num % firstLast != 0);
-    }
-
-    private static boolean isSpy(long num) {
-        String[] numCharArr = Long.toString(num).split("");
-        long product = 1;
-        int sum = 0;
-        int dig;
-        for (String s : numCharArr) {
-            dig = Integer.parseInt(s);
-            sum += dig;
-            product *= dig;
-        }
-
-        return product == sum;
-    }
-
-    private static boolean iSBuzz(long num) {
-        return num % 10 == 7 | num % 7 == 0;
-    }
-
-    private static boolean isEven(long num) {
-        return num % 2 == 0;
-    }
-
-    private static boolean isDuck(long num) {
-        return Long.toString(num).contains("0");
-    }
-
-    private static boolean propertyMode(String mode, long num) {
-        switch (mode) {
-            case "SPY":
-                return isSpy(num);
-            case "BUZZ":
-                return iSBuzz(num);
-            case "DUCK":
-                return isDuck(num);
-            case "EVEN":
-                return isEven(num);
-            case "ODD":
-                return !isEven(num);
-            case "PALINDROMIC":
-                return isPalindromic(num);
-            case "GAPFUL":
-                return isGap(num);
-            case "SQUARE":
-                return isSquare(num);
-            case "SUNNY":
-                return isSunny(num);
-            case "JUMPING":
-                return isJumping(num);
-            default:
-                System.out.println("Wrong param(s)");
-                return false;
-        }
-    }
-
-    private static boolean isJumping(long num) {
-        String[] s = Long.toString(num).split("");
-
-        if (s.length == 1) {
-            return true;
-        }
-
-        int a = Integer.parseInt(s[0]);
-        int b;
-
-        for (int i = 1; i < s.length; i++) {
-            b = Integer.parseInt(s[i]);
-            if (!(a + 1 == b || a - 1 == b)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean isSunny(long num) {
-        double r = Math.sqrt(num + 1);
-        return r == (long) r;
-    }
-
-    private static boolean isSquare(long num) {
-        double r = Math.sqrt(num);
-        return r == (long) r;
     }
 }

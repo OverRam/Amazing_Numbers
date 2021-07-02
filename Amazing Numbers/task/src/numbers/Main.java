@@ -1,32 +1,41 @@
 package numbers;
 
-import java.util.InputMismatchException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-    static final String[] property = {"even", "odd", "buzz", "duck", "palindromic", "gapful", "spy", "sunny", "square"};
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         welcomeScreen();
         long firstNumber = 1;
-
         do {
-            System.out.print("\nEnter a request: ");
-            String[] strArr = sc.nextLine().toLowerCase().split(" ");
+            System.out.print("Enter a request: ");
+            String[] inpArr = sc.nextLine().toUpperCase().split(" ");
             System.out.println();
 
-            if (checkParam(strArr)) {
-                firstNumber = Long.parseLong(strArr[0]);
+            String[] params;
+            int countNumbers = Check.getCountNumbers(inpArr);
+            int countParam = inpArr.length - countNumbers;
+            boolean propIsOn = true;
+
+            if (countParam > 0 && countNumbers > 0) {
+                params = Arrays.copyOfRange(inpArr, countNumbers, inpArr.length);
+                propIsOn = Check.checkAllProperties(params);
+            }
+
+            if (Check.numbers(inpArr) && propIsOn) {
+
+                firstNumber = Long.parseLong(inpArr[0]);
 
                 if (firstNumber != 0) {
-                    if (strArr.length == 4) {
+                    if (inpArr.length == 4) {
                         int findNext = 0;
                         int countNumber = 0;
 
-                        while (findNext < Long.parseLong(strArr[1])) {
-                            if (propertyMode(strArr[2], firstNumber + countNumber) &&
-                                    propertyMode(strArr[3], firstNumber + countNumber)) {
+                        while (findNext < Long.parseLong(inpArr[1])) {
+                            if (propertyMode(inpArr[2], firstNumber + countNumber) &&
+                                    propertyMode(inpArr[3], firstNumber + countNumber)) {
 
                                 System.out.println(requestForMulti(firstNumber + countNumber));
                                 findNext++;
@@ -34,22 +43,24 @@ public class Main {
                             countNumber++;
                         }
 
-                    } else if (strArr.length == 3) {
+                    } else if (countNumbers == 2 && countParam > 0) {
                         int findNext = 0;
                         int countNumber = 0;
 
-                        while (findNext < Long.parseLong(strArr[1])) {
-                            if (propertyMode(strArr[2], firstNumber + countNumber)) {
+                        while (findNext < Long.parseLong(inpArr[1])) {
+                            if (propertyMode(inpArr[2], firstNumber + countNumber)) {
                                 System.out.println(requestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
                             countNumber++;
                         }
+                        System.out.println();
 
-                    } else if (strArr.length == 2) {
-                        for (int i = 0; i < Long.parseLong(strArr[1]); i++) {
+                    } else if (countNumbers == 2) {
+                        for (int i = 0; i < Long.parseLong(inpArr[1]); i++) {
                             System.out.println(requestForMulti(firstNumber + i));
                         }
+                        System.out.println();
 
                     } else {
                         System.out.println(requestForOne(firstNumber));
@@ -58,61 +69,6 @@ public class Main {
             }
         } while (firstNumber != 0);
         System.out.println("Goodbye!");
-    }
-
-
-    private static boolean checkParam(String[] param) {
-        try {
-            long[] data = new long[param.length];
-            for (int i = 0; i < param.length; i++) {
-                if (i == 2) {
-                    break;
-                }
-                data[i] = Long.parseLong(param[i]);
-            }
-
-            if (data[0] < 0) {
-                System.out.println("The first parameter should be a natural number or zero.");
-                return false;
-            }
-
-            if (data.length > 1 && data[1] <= 0) {
-                System.out.println("The second parameter should be a natural number.");
-                return false;
-            }
-
-
-            if (param.length > 2) {
-                boolean firstParam = checkProperty(param, 2);
-                boolean secParam = true;
-                StringBuilder sb = new StringBuilder().append(!firstParam ? param[2].toUpperCase() : "");
-
-                if (param.length == 4) {
-                    if (!notExclusiveProperties(param[2], param[3])) {
-                        System.out.println("The request contains mutually exclusive properties: [" + param[2] + ", " + param[3] +
-                                "\nThere are no numbers with these properties.");
-                        return false;
-                    }
-                    secParam = checkProperty(param, 3);
-                    sb.append(!firstParam && !secParam ? ", " : "").append(!secParam ? param[3].toUpperCase() : "");
-                    if (secParam && firstParam) {
-                        return true;
-                    }
-                } else if (firstParam) {
-                    return true;
-                }
-
-                System.out.println("The propert" + (!firstParam && !secParam ? "ies" : "y") + " [" + sb + "] "
-                        + (!firstParam && !secParam ? "are" : "is") + " wrong.\n" +
-                        "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]");
-                return false;
-            }
-
-        } catch (InputMismatchException | NumberFormatException e) {
-            System.out.println("The first parameter should be a natural number or zero.");
-            return false;
-        }
-        return true;
     }
 
     private static boolean notExclusiveProperties(String firstParam, String secParam) {
@@ -127,42 +83,42 @@ public class Main {
                 (!firstParam.equalsIgnoreCase("square") || !secParam.equalsIgnoreCase("sunny"));
     }
 
-    private static boolean checkProperty(String[] param, int indexProperty) {
-        for (String s : property) {
-            if (s.toLowerCase().equals(param[indexProperty])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static String requestForOne(long num) {
-        return String.format("Properties of %d\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b\n%12s: %b" +
-                        "\n%12s: %b\n%12s: %b",
-                num, "buzz", iSBuzz(num), "duck", isDuck(num), "palindromic", isPalindromic(num), "gapful", isGap(num),
-                "spy", isSpy(num), "square", isSquare(num), "sunny", isSunny(num), "even", isEven(num), "odd",
-                !isEven(num));
+        StringBuilder sb = new StringBuilder("Properties of ").append(num).append("\n");
+
+        for (int i = 0; i < Check.propertiesLength; i++) {
+            sb.append(String.format("%12s: %b\n", Check.propertiesArr[i].toLowerCase(),
+                    propertyMode(Check.propertiesArr[i], num)));
+        }
+        return sb.toString();
     }
 
     private static String requestForMulti(long num) {
-        return String.format("%20s", num + " is ") + (iSBuzz(num) ? "buzz, " : "") + (isDuck(num) ? "duck, " : "") +
-                (isPalindromic(num) ? "palindromic, " : "") + (isGap(num) ? "gapful, " : "") +
-                (isSpy(num) ? "spy, " : "") + (isSquare(num) ? "square " : "") + (isSunny(num) ? "sunny " : "")
-                + (isEven(num) ? "even" : "odd");
+        StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
+
+        for (int i = 0; i < Check.propertiesLength; i++) {
+            if (propertyMode(Check.propertiesArr[i], num)) {
+                sb.append(Check.propertiesArr[i].toLowerCase());
+                if (!Check.propertiesArr[i].equals("EVEN") && !Check.propertiesArr[i].equals("ODD")) {
+                    sb.append(", ");
+                }
+            }
+        }
+
+        return sb.toString();
     }
 
     private static void welcomeScreen() {
         System.out.println("Welcome to Amazing Numbers!\n" +
                 "\n" +
                 "Supported requests:\n" +
-                "- enter a natural number to know its properties; \n" +
+                "- enter a natural number to know its properties;\n" +
                 "- enter two natural numbers to obtain the properties of the list:\n" +
                 "  * the first parameter represents a starting number;\n" +
                 "  * the second parameter shows how many consecutive numbers are to be printed;\n" +
-                "- two natural numbers and a property to search for;\n" +
-                "- two natural numbers and two properties to search for;\n" +
+                "- two natural numbers and properties to search for;\n" +
                 "- separate the parameters with one space;\n" +
-                "- enter 0 to exit.");
+                "- enter 0 to exit.\n");
     }
 
     private static boolean isPalindromic(long num) {
@@ -210,27 +166,49 @@ public class Main {
 
     private static boolean propertyMode(String mode, long num) {
         switch (mode) {
-            case "spy":
+            case "SPY":
                 return isSpy(num);
-            case "buzz":
+            case "BUZZ":
                 return iSBuzz(num);
-            case "duck":
+            case "DUCK":
                 return isDuck(num);
-            case "even":
+            case "EVEN":
                 return isEven(num);
-            case "odd":
+            case "ODD":
                 return !isEven(num);
-            case "palindromic":
+            case "PALINDROMIC":
                 return isPalindromic(num);
-            case "gapful":
+            case "GAPFUL":
                 return isGap(num);
-            case "square":
+            case "SQUARE":
                 return isSquare(num);
-            case "sunny":
+            case "SUNNY":
                 return isSunny(num);
+            case "JUMPING":
+                return isJumping(num);
             default:
+                System.out.println("Wrong param(s)");
                 return false;
         }
+    }
+
+    private static boolean isJumping(long num) {
+        String[] s = Long.toString(num).split("");
+
+        if (s.length == 1) {
+            return true;
+        }
+
+        int a = Integer.parseInt(s[0]);
+        int b;
+
+        for (int i = 1; i < s.length; i++) {
+            b = Integer.parseInt(s[i]);
+            if (!(a + 1 == b || a - 1 == b)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean isSunny(long num) {

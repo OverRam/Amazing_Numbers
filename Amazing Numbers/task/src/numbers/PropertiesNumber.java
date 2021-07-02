@@ -101,4 +101,29 @@ public class PropertiesNumber {
                 return false;
         }
     }
+
+    static String requestForOne(long num) {
+        StringBuilder sb = new StringBuilder("Properties of ").append(num).append("\n");
+
+        for (int i = 0; i < Check.propertiesLength; i++) {
+            sb.append(String.format("%12s: %b\n", Check.propertiesArr[i].toLowerCase(),
+                    PropertiesNumber.propertyMode(Check.propertiesArr[i], num)));
+        }
+        return sb.toString();
+    }
+
+    static String requestForMulti(long num) {
+        StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
+
+        for (int i = 0; i < Check.propertiesLength; i++) {
+            if (PropertiesNumber.propertyMode(Check.propertiesArr[i], num)) {
+                sb.append(Check.propertiesArr[i].toLowerCase());
+                if (!Check.propertiesArr[i].equals("EVEN") && !Check.propertiesArr[i].equals("ODD")) {
+                    sb.append(", ");
+                }
+            }
+        }
+
+        return sb.toString();
+    }
 }

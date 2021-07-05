@@ -78,6 +78,52 @@ public class Check {
         return count;
     }
 
+    static boolean exclusiveProperties(String[] params) {
+        int even = 0;
+        int odd = 0;
+        int duck = 0;
+        int spy = 0;
+        int sunny = 0;
+        int square = 0;
+        StringBuilder sb = new StringBuilder();
+
+        for (String e : params) {
+
+            if (e.equals("EVEN") || e.equals("ODD")){
+                even += e.equals("EVEN") && even < 1 ? 1 : 0;
+                odd += e.equals("ODD") && odd < 1 ? 1 : 0;
+                if (even + odd >= 2) {
+                    sb.append("EVEN, ODD");
+                    break;
+                }
+            }
+
+            if (e.equals("DUCK") || e.equals("SPY")){
+                duck += e.equals("DUCK") && duck < 1 ? 1 : 0;
+                spy += e.equals("SPY") && spy < 1 ? 1 : 0;
+                if (duck + spy >= 2) {
+                    sb.append("DUCK, SPY");
+                    break;
+                }
+            }
+
+            if (e.equals("SUNNY") || e.equals("SQUARE")){
+                sunny += e.equals("SUNNY") && sunny < 1 ? 1 : 0;
+                square += e.equals("SQUARE") && square < 1 ? 1 : 0;
+                if (sunny + square >= 2) {
+                    sb.append("SUNNY, SQUARE");
+                    break;
+                }
+            }
+        }
+
+        boolean isExc = even + odd >= 2 || duck + spy >= 2 || sunny + square >= 2;
+
+        if (isExc) {
+            Errors.exclusiveProperties(sb.toString());
+        }
+        return isExc;
+    }
 }
 
 

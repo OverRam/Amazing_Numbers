@@ -18,14 +18,15 @@ public class Main {
             int countNumbers = Check.getCountNumbers(inpArr);
             int countParam = inpArr.length - countNumbers;
             boolean propIsOn = true;
+            boolean isNotExc = true;
 
             if (countParam > 0 && countNumbers > 0) {
                 params = Arrays.copyOfRange(inpArr, countNumbers, inpArr.length);
                 propIsOn = Check.checkAllProperties(params);
+                isNotExc = !Check.exclusiveProperties(params);
             }
 
-            if (Check.numbers(inpArr) && propIsOn) {
-
+            if (Check.numbers(inpArr) && propIsOn && isNotExc) {
                 firstNumber = Long.parseLong(inpArr[0]);
 
                 if (firstNumber != 0) {
@@ -37,7 +38,7 @@ public class Main {
                             if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber) &&
                                     PropertiesNumber.propertyMode(inpArr[3], firstNumber + countNumber)) {
 
-                                System.out.println(PropertiesNumber.requestForMulti(firstNumber + countNumber));
+                                System.out.println(PropertiesNumber.printRequestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
                             countNumber++;
@@ -49,7 +50,7 @@ public class Main {
 
                         while (findNext < Long.parseLong(inpArr[1])) {
                             if (PropertiesNumber.propertyMode(inpArr[2], firstNumber + countNumber)) {
-                                System.out.println(PropertiesNumber.requestForMulti(firstNumber + countNumber));
+                                System.out.println(PropertiesNumber.printRequestForMulti(firstNumber + countNumber));
                                 findNext++;
                             }
                             countNumber++;
@@ -58,31 +59,18 @@ public class Main {
 
                     } else if (countNumbers == 2) {
                         for (int i = 0; i < Long.parseLong(inpArr[1]); i++) {
-                            System.out.println(PropertiesNumber.requestForMulti(firstNumber + i));
+                            System.out.println(PropertiesNumber.printRequestForMulti(firstNumber + i));
                         }
                         System.out.println();
 
                     } else {
-                        System.out.println(PropertiesNumber.requestForOne(firstNumber));
+                        System.out.println(PropertiesNumber.printRequestForOne(firstNumber));
                     }
                 }
             }
         } while (firstNumber != 0);
         System.out.println("Goodbye!");
     }
-
-    private static boolean notExclusiveProperties(String firstParam, String secParam) {
-
-        if (firstParam.equalsIgnoreCase("even") && secParam.equalsIgnoreCase("odd") ||
-                firstParam.equalsIgnoreCase("odd") && secParam.equalsIgnoreCase("even")) {
-            return false;
-        } else if (firstParam.equalsIgnoreCase("duck") && secParam.equalsIgnoreCase("spy") ||
-                firstParam.equalsIgnoreCase("spy") && secParam.equalsIgnoreCase("duck")) {
-            return false;
-        } else return (!firstParam.equalsIgnoreCase("sunny") || !secParam.equalsIgnoreCase("square")) &&
-                (!firstParam.equalsIgnoreCase("square") || !secParam.equalsIgnoreCase("sunny"));
-    }
-
 
     private static void welcomeScreen() {
         System.out.println("Welcome to Amazing Numbers!\n" +

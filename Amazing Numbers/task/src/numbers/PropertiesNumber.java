@@ -102,7 +102,7 @@ public class PropertiesNumber {
         }
     }
 
-    static String requestForOne(long num) {
+    static String printRequestForOne(long num) {
         StringBuilder sb = new StringBuilder("Properties of ").append(num).append("\n");
 
         for (int i = 0; i < Check.propertiesLength; i++) {
@@ -112,7 +112,7 @@ public class PropertiesNumber {
         return sb.toString();
     }
 
-    static String requestForMulti(long num) {
+    static String printRequestForMulti(long num) {
         StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
 
         for (int i = 0; i < Check.propertiesLength; i++) {

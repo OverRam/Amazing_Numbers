@@ -7,9 +7,9 @@ class Errors {
         System.out.println("Available properties: " + Arrays.toString(Check.propertiesArr) + "\n");
     }
 
-    static void exclusiveProperties(String[] str) {
-        System.out.printf("The request contains mutually exclusive properties: %s\n" +
-                "There are no numbers with these properties.\n", Arrays.toString(str));
+    static void exclusiveProperties(String str) {
+        System.out.printf("The request contains mutually exclusive properties: [%s]\n" +
+                "There are no numbers with these properties.\n\n", str);
     }
 
     static void wrongProperty(String prop) {

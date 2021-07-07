@@ -7,6 +7,32 @@ public class Check {
             "JUMPING", "EVEN", "ODD"};
     static final int propertiesLength = propertiesArr.length;
 
+    static boolean numbers(String[] arr) {
+        int i = 0;
+        long check;
+        try {
+            for (; i < arr.length && i < 2; i++) {
+                check = Long.parseLong(arr[i]);
+                if (check < 0) {
+                    if (i == 0) {
+                        Errors.wrongFirstParam();
+                    } else {
+                        Errors.wrongSecParam();
+                    }
+                    return false;
+                }
+            }
+        } catch (InputMismatchException | NumberFormatException e) {
+            if (i == 0) {
+                Errors.wrongFirstParam();
+            } else {
+                Errors.wrongSecParam();
+            }
+            return false;
+        }
+        return true;
+    }
+
     private static boolean badProperties(String inp) {
         for (String s : propertiesArr) {
             if (inp.equals(s)) {
@@ -97,6 +123,14 @@ public class Check {
             Errors.exclusiveProperties(sb.toString());
         }
         return isExc;
+    }
+
+    static long[] getNumbers(int countNumbers, String[] params) {
+        long[] numbers = new long[countNumbers];
+        for (int i = 0; i < countNumbers; i++) {
+            numbers[i] = Long.parseLong(params[i]);
+        }
+        return numbers;
     }
 }
 

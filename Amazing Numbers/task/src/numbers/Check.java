@@ -7,32 +7,6 @@ public class Check {
             "JUMPING", "EVEN", "ODD"};
     static final int propertiesLength = propertiesArr.length;
 
-    static boolean numbers(String[] arr) {
-        int i = 0;
-        long check;
-        try {
-            for (; i < arr.length && i < 2; i++) {
-                check = Long.parseLong(arr[i]);
-                if (check < 0) {
-                    if (i == 0) {
-                        Errors.wrongFirstParam();
-                    } else {
-                        Errors.wrongSecParam();
-                    }
-                    return false;
-                }
-            }
-        } catch (InputMismatchException | NumberFormatException e) {
-            if (i == 0) {
-                Errors.wrongFirstParam();
-            } else {
-                Errors.wrongSecParam();
-            }
-            return false;
-        }
-        return true;
-    }
-
     private static boolean badProperties(String inp) {
         for (String s : propertiesArr) {
             if (inp.equals(s)) {
@@ -63,19 +37,19 @@ public class Check {
         return true;
     }
 
-    static int getCountNumbers(String[] params) {
-        int count = 0;
+    static int CountNumbersInParams(String[] params) {
+        int i = 0;
         try {
             for (String s : params) {
                 Long.parseLong(s);
-                ++count;
-                if (count == 2) {
+                ++i;
+                if (i == 2) {
                     break;
                 }
             }
         } catch (InputMismatchException | NumberFormatException ignored) {
         }
-        return count;
+        return i;
     }
 
     static boolean exclusiveProperties(String[] params) {
@@ -89,7 +63,7 @@ public class Check {
 
         for (String e : params) {
 
-            if (e.equals("EVEN") || e.equals("ODD")){
+            if (e.equals("EVEN") || e.equals("ODD")) {
                 even += e.equals("EVEN") && even < 1 ? 1 : 0;
                 odd += e.equals("ODD") && odd < 1 ? 1 : 0;
                 if (even + odd >= 2) {
@@ -98,7 +72,7 @@ public class Check {
                 }
             }
 
-            if (e.equals("DUCK") || e.equals("SPY")){
+            if (e.equals("DUCK") || e.equals("SPY")) {
                 duck += e.equals("DUCK") && duck < 1 ? 1 : 0;
                 spy += e.equals("SPY") && spy < 1 ? 1 : 0;
                 if (duck + spy >= 2) {
@@ -107,7 +81,7 @@ public class Check {
                 }
             }
 
-            if (e.equals("SUNNY") || e.equals("SQUARE")){
+            if (e.equals("SUNNY") || e.equals("SQUARE")) {
                 sunny += e.equals("SUNNY") && sunny < 1 ? 1 : 0;
                 square += e.equals("SQUARE") && square < 1 ? 1 : 0;
                 if (sunny + square >= 2) {

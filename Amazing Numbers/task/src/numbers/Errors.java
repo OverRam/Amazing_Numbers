@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 class Errors {
     static void goodProperties() {
-        System.out.println("Available properties: " + Arrays.toString(Check.propertiesArr) + "\n");
+        System.out.println("Available properties: " + Arrays.toString(UserParams.propertiesArr) + "\n");
     }
 
     static void exclusiveProperties(String str) {

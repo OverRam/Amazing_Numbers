@@ -1,6 +1,10 @@
 package numbers;
 
 public class HandlerRequest {
+    static final String[] propertiesArr = {"BUZZ", "DUCK", "PALINDROMIC", "GAPFUL", "SPY", "SQUARE", "SUNNY",
+            "JUMPING", "EVEN", "ODD"};
+    static final int propertiesLength = propertiesArr.length;
+
     static boolean propertyMode(String mode, long num) {
         switch (mode) {
             case "SPY":
@@ -24,28 +28,28 @@ public class HandlerRequest {
             case "JUMPING":
                 return PropertiesNumber.isJumping(num);
             default:
-                System.out.println("Wrong param(s)");
+                System.out.println("Wrong param(s)" + mode);
                 return false;
         }
     }
 
-    static String printRequestForOne(long num) {
+    static String RequestForOne(long num) {
         StringBuilder sb = new StringBuilder("Properties of ").append(num).append("\n");
 
-        for (int i = 0; i < UserParams.propertiesLength; i++) {
-            sb.append(String.format("%12s: %b\n", UserParams.propertiesArr[i].toLowerCase(),
-                    HandlerRequest.propertyMode(UserParams.propertiesArr[i], num)));
+        for (int i = 0; i < propertiesLength; i++) {
+            sb.append(String.format("%12s: %b\n", propertiesArr[i].toLowerCase(),
+                    HandlerRequest.propertyMode(propertiesArr[i], num)));
         }
         return sb.toString();
     }
 
-    static String printRequestForMulti(long num) {
+    static String RequestForMulti(long num) {
         StringBuilder sb = new StringBuilder(String.format("%20s", num + " is "));
 
-        for (int i = 0; i < UserParams.propertiesLength; i++) {
-            if (HandlerRequest.propertyMode(UserParams.propertiesArr[i], num)) {
-                sb.append(UserParams.propertiesArr[i].toLowerCase());
-                if (!UserParams.propertiesArr[i].equals("EVEN") && !UserParams.propertiesArr[i].equals("ODD")) {
+        for (int i = 0; i < propertiesLength; i++) {
+            if (HandlerRequest.propertyMode(propertiesArr[i], num)) {
+                sb.append(propertiesArr[i].toLowerCase());
+                if (!propertiesArr[i].equals("EVEN") && !propertiesArr[i].equals("ODD")) {
                     sb.append(", ");
                 }
             }
@@ -54,12 +58,30 @@ public class HandlerRequest {
         return sb.toString();
     }
 
-    static void handlerRequest(String[] params, int countNumbers, int countParams) {
+    static void print(long[] numbers, String[] params, int countNumbers, int countParams) {
         if (countNumbers == 1) {
-            printRequestForOne(Long.parseLong(params[0]));
+            System.out.println(RequestForOne(numbers[0]));
+        } else {
+            int findNext = 0;
+            int countNumber = 0;
+            while (findNext < numbers[1]) {
+                if (countParams <= 0) {
+                    System.out.println(RequestForMulti(numbers[0] + countNumber));
+                    findNext++;
+                } else {
+                    for (int i = 0; i < countParams; i++) {
+                        if (!propertyMode(params[i], numbers[0] + countNumber)) {
+                            break;
+                        }
+                        if (i == countParams - 1) {
+                            System.out.println(RequestForMulti(numbers[0] + countNumber));
+                            findNext++;
+                        }
+                    }
+                }
+                countNumber++;
+            }
         }
-
+        System.out.println();
     }
-
-
 }

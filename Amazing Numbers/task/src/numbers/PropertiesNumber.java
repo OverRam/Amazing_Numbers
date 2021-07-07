@@ -12,11 +12,12 @@ public class PropertiesNumber {
         int a = Integer.parseInt(s[0]);
         int b;
 
-        for (int i = 1; i < s.length; i++) {
-            b = Integer.parseInt(s[i]);
+        for (int i = 0; i < s.length - 1; i++) {
+            b = Integer.parseInt(s[i + 1]);
             if (!(a + 1 == b || a - 1 == b)) {
                 return false;
             }
+            a = b;
         }
         return true;
     }

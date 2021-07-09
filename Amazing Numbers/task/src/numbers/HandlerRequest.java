@@ -2,31 +2,38 @@ package numbers;
 
 public class HandlerRequest {
     static final String[] propertiesArr = {"BUZZ", "DUCK", "PALINDROMIC", "GAPFUL", "SPY", "SQUARE", "SUNNY",
-            "JUMPING", "EVEN", "ODD"};
+            "JUMPING", "HAPPY", "SAD", "EVEN", "ODD"};
     static final int propertiesLength = propertiesArr.length;
 
     static boolean propertyMode(String mode, long num) {
+        boolean isNeg = mode.charAt(0) == '-';
+        mode = isNeg ? mode.replaceFirst("-", "") : mode;
+
         switch (mode) {
             case "SPY":
-                return PropertiesNumber.isSpy(num);
+                return isNeg != PropertiesNumber.isSpy(num);
             case "BUZZ":
-                return PropertiesNumber.iSBuzz(num);
+                return isNeg != PropertiesNumber.iSBuzz(num);
             case "DUCK":
-                return PropertiesNumber.isDuck(num);
+                return isNeg != PropertiesNumber.isDuck(num);
             case "EVEN":
-                return PropertiesNumber.isEven(num);
+                return isNeg != PropertiesNumber.isEven(num);
             case "ODD":
-                return !PropertiesNumber.isEven(num);
+                return isNeg != PropertiesNumber.isOdd(num);
             case "PALINDROMIC":
-                return PropertiesNumber.isPalindromic(num);
+                return isNeg != PropertiesNumber.isPalindromic(num);
             case "GAPFUL":
-                return PropertiesNumber.isGap(num);
+                return isNeg != PropertiesNumber.isGap(num);
             case "SQUARE":
-                return PropertiesNumber.isSquare(num);
+                return isNeg != PropertiesNumber.isSquare(num);
             case "SUNNY":
-                return PropertiesNumber.isSunny(num);
+                return isNeg != PropertiesNumber.isSunny(num);
             case "JUMPING":
-                return PropertiesNumber.isJumping(num);
+                return isNeg != PropertiesNumber.isJumping(num);
+            case "HAPPY":
+                return isNeg != PropertiesNumber.isHappy(num);
+            case "SAD":
+                return isNeg == PropertiesNumber.isHappy(num);
             default:
                 System.out.println("Wrong param(s)" + mode);
                 return false;

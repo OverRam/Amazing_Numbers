@@ -71,7 +71,24 @@ public class PropertiesNumber {
         return num % 2 == 0;
     }
 
+    static boolean isOdd(long num) {
+        return num % 2 == 1;
+    }
+
     static boolean isDuck(long num) {
         return Long.toString(num).contains("0");
+    }
+
+    static boolean isHappy(long num) {
+        String s = Long.toString(num);
+        int i;
+        do {
+            i = 0;
+            for (int j = 0; j < s.length(); j++) {
+                i += Math.pow(Integer.parseInt(s.charAt(j) + ""), 2);
+            }
+            s = i + "";
+        } while (i > 9);
+        return i == 1;
     }
 }
